@@ -169,7 +169,7 @@ export const mobileNav = {
 /* Hero. The panel's headline is fixed (it is the page <h1>); each slide adds a short label and its button.
    The artworks are TOTO Global's own key visuals (toto.com/en, 880×560, titles baked in), shown untouched. */
 export const heroIntro = {
-  eyebrow: 'TOTO India · Japanese since 1917',
+  eyebrow: 'TOTO · Japanese since 1917',
   title: ['Pure luxury,', 'quietly engineered.'],
   lede: 'For more than a century, TOTO has shaped the bathroom around one belief: true comfort begins with clean.',
 };
