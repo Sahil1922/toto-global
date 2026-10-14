@@ -2,21 +2,12 @@
    Copy must stay factual: see CLAUDE.md "Content and facts" before changing anything. */
 
 /* Images live in public/assets/img and keep their filenames, so TOTO's originals can be swapped in */
-export const img = (name) => `${import.meta.env.BASE_URL}assets/img/${name}`;
+/* BASE_URL keeps whatever vite.config.js `base` says, which may lack a trailing slash (e.g. '/toto-global') */
+const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+export const img = (name) => `${BASE}assets/img/${name}`;
 
 const IN = 'https://in.toto.com';
 
-export const categories = [
-  { label: 'WASHLET', href: `${IN}/product-category/washlet/` },
-  { label: 'ECOWASHER', href: `${IN}/product-category/ecowasher/` },
-  { label: 'Toilets', href: `${IN}/product-category/toilets/` },
-  { label: 'Fittings', href: `${IN}/product-category/fittings/` },
-  { label: 'Showers', href: `${IN}/product-category/showers/` },
-  { label: 'Washbasins', href: `${IN}/product-category/washbasins/` },
-  { label: 'Bathtubs', href: `${IN}/product-category/bathtubs/` },
-  { label: 'Accessories', href: `${IN}/product-category/accessories/` },
-  { label: 'Public', href: `${IN}/product-category/public/` },
-];
 
 /* Products mega menu (after Carysil): Browse → Categories → Series → Preview.
    Every category, series and product link is taken from in.toto.com's own category pages. */
@@ -137,21 +128,30 @@ export const links = {
   neorest: `${IN}/neorest/pure_luxury/`,
 };
 
-export const primaryNav = [
-  { label: 'Brand purpose', href: `${IN}/purpose/` },
-  { label: 'Cleanovation', href: `${IN}/cleanovation/` },
-  { label: 'Design', href: `${IN}/design/` },
-  { label: 'Showroom', href: `${IN}/delhi-showroom/` },
-];
+/* Header nav, in the order of toto.com/en's: Home … Professional enquiries. The Products mega menu sits between
+   `before` and `after`. Professional enquiries goes to TOTO India's contact page (Global's goes to a Japanese form). */
+export const primaryNav = {
+  before: [
+    { label: 'Home', href: '#top', current: true },
+    { label: 'Company information', href: `${IN}/corporate/` },
+    { label: 'Brand purpose', href: `${IN}/purpose/` },
+  ],
+  after: [
+    { label: 'Design', href: `${IN}/design/` },
+    { label: 'Reference', href: 'https://www.toto.com/en/project/' },
+    { label: 'Professional enquiries', href: `${IN}/contact-us/` },
+  ],
+};
 
 export const mobileNav = {
   big: [
     { label: 'Products', href: '#products' },
-    { label: 'NEOREST', href: `${IN}/neorest/pure_luxury/` },
-    { label: 'WASHLET', href: `${IN}/washlet/` },
-    { label: 'Cleanovation', href: `${IN}/cleanovation/` },
+    { label: 'Company information', href: `${IN}/corporate/` },
     { label: 'Brand purpose', href: `${IN}/purpose/` },
+    { label: 'Cleanovation', href: `${IN}/cleanovation/` },
     { label: 'Design', href: `${IN}/design/` },
+    { label: 'Reference', href: 'https://www.toto.com/en/project/' },
+    { label: 'Professional enquiries', href: `${IN}/contact-us/` },
     { label: 'Delhi Showroom', href: `${IN}/delhi-showroom/` },
   ],
   small: [
@@ -166,65 +166,68 @@ export const mobileNav = {
   ],
 };
 
-/* Key visuals. The first slide's title is the page <h1>. `light` slides use ink text. */
+/* Hero. The panel's headline is fixed (it is the page <h1>); each slide adds a short label and its button.
+   The artworks are TOTO Global's own key visuals (toto.com/en, 880×560, titles baked in), shown untouched. */
+export const heroIntro = {
+  eyebrow: 'TOTO India · Japanese since 1917',
+  title: ['Pure luxury,', 'quietly engineered.'],
+  lede: 'For more than a century, TOTO has shaped the bathroom around one belief: true comfort begins with clean.',
+};
+
 export const slides = [
   {
-    tab: 'NEOREST', tabLabel: 'NEOREST',
-    eyebrow: 'NEOREST · Pure luxury',
-    title: ['Pure luxury,', 'quietly engineered.'],
-    lede: "TOTO's flagship, with toilet, bath and basin designed as one quiet expression of comfort.",
-    cta: 'Discover NEOREST', href: `${IN}/neorest/pure_luxury/`,
-    src: 'hero.webp', width: 1920, height: 922, pos: '58% 60%', posSm: '62% 60%',
-    alt: 'A NEOREST toilet and freestanding bath on a timber deck, surrounded by a glass pavilion and a lily pond',
+    label: 'Design philosophy', cta: 'TOTO design', href: `${IN}/design/`,
+    src: 'kv-art-design.webp',
+    alt: 'Close-up of the softly lit lid of a NEOREST, titled TOTO Design Philosophy: Understated Presence',
   },
   {
-    tab: 'Cleanovation', tabLabel: 'TOTO Cleanovation', long: true,
-    eyebrow: 'TOTO Cleanovation',
-    title: ['Enriching lives with innovative clean technology.'],
-    cta: 'Explore Cleanovation', href: `${IN}/cleanovation/`,
-    src: 'kv-cleanovation.webp', width: 1550, height: 872, pos: '50% 50%', posSm: '72% 40%',
-    alt: 'A clear glass toilet bowl form holding a ribbon of blue water, against a pale grey background',
+    label: 'NEOREST', cta: 'Discover NEOREST', href: `${IN}/neorest/pure_luxury/`,
+    src: 'kv-art-neorest.webp',
+    alt: 'The NEOREST range standing on a reflective terrace beside a lake and mountains, titled NEOREST',
   },
   {
-    tab: 'Brand purpose', tabLabel: 'Brand purpose', long: true,
-    eyebrow: 'Brand purpose',
-    title: ['Create an enriched and more comfortable lifestyle and culture.'],
-    cta: 'Our purpose', href: `${IN}/purpose/`,
-    src: 'kv-purpose.webp', width: 1920, height: 1080, pos: '50% 60%', posSm: '22% 50%',
-    alt: 'A person in white linen walking past a NEOREST toilet in a bright, white bathroom',
+    label: 'TORNADO FLUSH', cta: 'Our technology', href: `${IN}/technology/`,
+    src: 'kv-art-tornado.webp',
+    alt: 'Water swirling around a toilet bowl, titled TORNADO FLUSH: Remarkable flushing power',
   },
   {
-    tab: 'Design', tabLabel: 'Design philosophy',
-    eyebrow: 'Design philosophy',
-    title: ['Understated presence.'],
-    lede: 'Forms that step back, so the experience can come forward.',
-    cta: 'TOTO design', href: `${IN}/design/`,
-    src: 'kv-design.webp', width: 1422, height: 800, pos: '50% 50%', posSm: '44% 50%',
-    alt: 'Five slender TOTO faucets in different metal finishes standing in still, dark blue water',
+    label: 'TOTO Cleanovation', cta: 'Explore Cleanovation', href: `${IN}/cleanovation/`,
+    src: 'kv-art-cleanovation.webp',
+    alt: 'A clear glass bowl holding blue water, titled TOTO Cleanovation: Enriching lives with innovative clean technology',
+  },
+  {
+    label: 'Inspiration', cta: 'Get inspired', href: `${IN}/pages/inspiration/`,
+    src: 'kv-art-inspiration.webp',
+    alt: 'A stone bathroom with a freestanding bath and wall-hung toilet facing snowy mountains, titled Inspiration',
+  },
+  {
+    label: 'Brand purpose', cta: 'Our purpose', href: `${IN}/purpose/`,
+    src: 'kv-art-purpose.webp',
+    alt: 'A laughing family outdoors, titled Brand Purpose: Create an enriched and more comfortable lifestyle and culture',
   },
 ];
 
 export const featured = [
   {
-    title: 'TOTO Stories', text: 'Initiatives that put our brand purpose into practice, around the world.',
+    title: 'TOTO Stories', kicker: 'Brand purpose', pos: '62% 50%', text: 'Initiatives that put our brand purpose into practice, around the world.',
     more: 'Read the stories', href: 'https://www.toto.com/en/purpose/',
     src: 'feat-stories.webp', width: 810, height: 1080,
     alt: 'Cupped hands catching clear water from a river, with a line drawing of the globe above them',
   },
   {
-    title: 'Inspiration', text: 'Bathrooms designed in many styles, for ideas to take home.',
+    title: 'Inspiration', kicker: 'Bathrooms', pos: '50% 55%', text: 'Bathrooms designed in many styles, for ideas to take home.',
     more: 'Get inspired', href: `${IN}/pages/inspiration/`,
     src: 'col-neorest.webp', width: 886, height: 1182,
     alt: 'Wall-hung NEOREST toilet and freestanding bath in a warm, timber-floored bathroom with a fireplace',
   },
   {
-    title: 'Global reference', text: "TOTO is found in the world's renowned buildings, from Paris to Kyoto.",
+    title: 'Global reference', kicker: 'Hotels & buildings', pos: '50% 35%', text: "TOTO is found in the world's renowned buildings, from Paris to Kyoto.",
     more: 'View projects', href: 'https://www.toto.com/en/project/',
     src: 'hotel-plaza.webp', width: 760, height: 1014,
     alt: 'The flower-lined balconies and red awnings of Hôtel Plaza Athénée in Paris',
   },
   {
-    title: 'Design', text: "Award-winning products, created in pursuit of TOTO's design philosophy.",
+    title: 'Design', kicker: 'Award-winning', pos: '50% 30%', text: "Award-winning products, created in pursuit of TOTO's design philosophy.",
     more: 'TOTO design', href: `${IN}/design/`,
     src: 'feat-design.webp', width: 812, height: 1082,
     alt: 'A matte black TOTO basin faucet against a dark, softly rippled background',
@@ -240,19 +243,23 @@ export const about = {
     { title: 'Our journey', text: 'From Tōyō Tōki in 1917 to WASHLET and NEOREST.', href: `${IN}/journey/`, src: 'about-journey.webp', width: 333, height: 222 },
     { title: 'News & events', text: 'Launches, press and events from TOTO India.', href: `${IN}/news-events/`, src: 'about-news.webp', width: 333, height: 222 },
   ],
-  stats: [
-    { term: 'Founded', num: '1917', cap: 'Founded in Kitakyushu, Japan' },
-    { term: 'WASHLET introduced', num: '1980', cap: 'The first WASHLET is introduced' },
-    { term: 'WASHLET units shipped', num: '70M+', cap: 'WASHLET units shipped worldwide' },
-    { term: 'Made in India since', num: '2014', cap: 'Made in India at our Halol, Gujarat plant' },
+  /* TOTO-wide (global) milestones, in time order. Sources: CLAUDE.md "Content and facts"
+     (NEOREST 4M+ as of Mar 2025; WASHLET 70M+ reached Nov 2025, TOTO press release) */
+  milestones: [
+    { tag: 'Founded', figure: '1917', cap: 'Founded as Tōyō Tōki in Kitakyushu, Japan' },
+    { tag: 'WASHLET', figure: '1980', cap: 'The first WASHLET is introduced' },
+    { tag: 'Mar 2025', figure: '4M+', cap: 'NEOREST units shipped worldwide' },
+    { tag: 'Nov 2025', figure: '70M+', cap: 'WASHLET units shipped worldwide' },
   ],
 };
 
+/* TOTO Cleanovation, after Carysil's "Signature" band: four columns over one full-width photograph that changes
+   with the column you hover. Band photos are landscape and at least ~1550px wide. */
 export const cleanTiles = [
-  { title: 'TOTO Cleanovation', text: 'Clean innovation, from the glaze to the flush.', href: `${IN}/cleanovation/`, src: 'clean-cleanovation.webp', width: 960, height: 1280, alt: 'A drop of water falling into a toilet bowl lit with a soft blue glow' },
-  { title: "Let's wash with WASHLET", text: 'The original warm-water cleansing seat, since 1980.', href: `${IN}/washlet/`, src: 'col-washlet.webp', width: 711, height: 948, alt: 'Wall-hung toilet with WASHLET seat beside a floor-to-ceiling window onto a forest' },
-  { title: 'CLEAN SYNERGY', text: 'Technology and design, working as one.', href: `${IN}/technology/`, src: 'clean-synergy.webp', width: 408, height: 544, alt: 'Illustration of water swirling around the inside of a toilet bowl' },
-  { title: 'The security of touchless', text: 'Sensor faucets and hands-free operation, for fewer shared surfaces.', href: 'https://www.toto.com/en/cleanovation/touchless.htm', src: 'clean-touchless.webp', width: 960, height: 1280, alt: 'A hand under the stream of a touchless TOTO faucet' },
+  { title: 'Cleanovation', text: 'Enriching lives with innovative clean technology, from the glaze to the flush.', href: `${IN}/cleanovation/`, src: 'kv-cleanovation.webp', width: 1550, height: 872, pos: '62% 50%', alt: 'A clear glass toilet bowl form holding a ribbon of blue water' },
+  { title: 'WASHLET', text: "Let's wash with WASHLET: the original warm-water cleansing seat, refined since 1980.", href: `${IN}/washlet/`, src: 'kv-purpose.webp', width: 1920, height: 1080, pos: '50% 55%', alt: 'A person in white linen walking past a NEOREST toilet with an integrated WASHLET' },
+  { title: 'Clean Synergy', text: 'Technology and design working as one, so the bowl keeps itself cleaner with less effort.', href: `${IN}/technology/`, src: 'band-synergy.webp', width: 1920, height: 1080, pos: '50% 50%', alt: 'Illustration of water flushing through a clear toilet bowl and trap' },
+  { title: 'Touchless', text: 'Sensor faucets and hands-free operation, for fewer shared surfaces.', href: 'https://www.toto.com/en/cleanovation/touchless.htm', src: 'band-touchless.webp', width: 1551, height: 873, pos: '60% 50%', alt: 'A hand held under the stream of a touchless TOTO faucet' },
 ];
 
 export const technologies = [
@@ -262,84 +269,33 @@ export const technologies = [
   { name: 'ACTILIGHT', text: 'A special glaze and a built-in clean light in the lid work together, so waste washes away more easily.' },
 ];
 
-export const neorestFeature = {
-  text: "A sanctuary, engineered. NEOREST brings TOTO's most advanced comfort and cleaning technologies together in a form that is almost sculptural. More than four million have been shipped worldwide.",
-  models: ['AS', 'LS', 'NX', 'WX'],
-  href: `${IN}/neorest/pure_luxury/`,
-  src: 'neorest-lineup.webp', width: 1920, height: 720,
-  alt: 'The NEOREST range standing on a reflective terrace overlooking a calm lake and mountains',
-};
 
-export const products = [
-  { title: 'WASHLET', text: 'Warm-water cleansing, refined continuously since 1980.', href: `${IN}/washlet/`, src: 'prod-washlet.webp', width: 1000, height: 667, alt: 'Two white toilets with WASHLET seats against pale blue walls' },
-  { title: 'Flotation Tub', text: 'A reclined, near-weightless posture that lets the whole body rest.', href: `${IN}/recline-comfort/`, src: 'col-tub.webp', width: 900, height: 1201, pos: '50% 58%', alt: 'A woman resting in a Flotation Tub at night, surrounded by candlelight' },
-  { title: 'Faucets', text: 'Precise, generous water, including touchless models.', href: `${IN}/faucet/`, src: 'prod-faucet.webp', width: 1000, height: 666, alt: 'A brushed gold faucet over a white vessel basin on a marble counter' },
-  { title: 'Showers', text: 'From G Selection showers to everyday hand showers.', href: `${IN}/shower/`, src: 'prod-shower.webp', width: 1000, height: 667, alt: 'A woman with eyes closed under a warm, softly lit shower' },
-  { title: 'Washbasins', text: 'Basins in calm, considered forms, made to pair with TOTO faucets.', href: `${IN}/product-category/washbasins/`, src: 'prod-basin.webp', width: 1000, height: 666, alt: 'A grey rectangular basin and black faucet on a stone counter, under slim pendant lights' },
-  { title: 'Public restrooms', text: 'Hygienic, accessible restrooms for airports, offices and hotels.', href: `${IN}/public-restroom/`, src: 'prod-public.webp', width: 1000, height: 667, alt: 'A bright public restroom with a long white counter, mirrors and touchless faucets' },
+/* Product range, exactly toto.com/en's PRODUCT list and order (requested: Global, not India). Links are Global's own.
+   Every photo is shown whole (requested): tiles take each photo's own proportions. `span` marks NEOREST, which gets
+   a row to itself; `productRows` groups the rest into justified rows (equal heights, full width, no cropping). */
+const GL = 'https://www.toto.com/en';
+export const productRows = [[0], [1, 2, 3, 4], [5, 6, 7, 8]];
+export const productRange = [
+  { name: 'NEOREST', href: `${GL}/neorest/`, src: 'neorest-lineup.webp', width: 1920, height: 720, pos: '42% 60%', span: true, alt: 'The NEOREST range standing on a reflective terrace beside a lake' },
+  { name: 'WASHLET+', href: `${GL}/washletplus/`, src: 'prod-washlet.webp', width: 1000, height: 667, pos: '50% 45%', alt: 'Two white toilets with WASHLET seats against pale blue walls' },
+  { name: 'WASHLET', href: `${GL}/washlet/`, src: 'col-washlet.webp', width: 711, height: 948, pos: '50% 60%', alt: 'Wall-hung toilet with WASHLET seat beside a window onto a forest' },
+  { name: 'Flotation Tub', href: `${GL}/neorest/pure_luxury/collections/flotationtub/`, src: 'col-tub.webp', width: 900, height: 1201, pos: '50% 58%', alt: 'A woman resting in a Flotation Tub at night, surrounded by candlelight' },
+  { name: 'Faucet', href: `${GL}/gb_faucet/`, src: 'kv-design.webp', width: 1422, height: 800, pos: '55% 50%', alt: 'Slender TOTO faucets in different metal finishes standing in still, dark blue water' },
+  { name: 'Touchless Faucet', href: `${GL}/gb_faucet/?anc=touchless-faucet`, src: 'clean-touchless.webp', width: 960, height: 1280, pos: '50% 45%', alt: 'A hand under the stream of a touchless TOTO faucet' },
+  { name: 'Shower', href: `${GL}/gb_shower/`, src: 'prod-shower.webp', width: 1000, height: 667, pos: '40% 50%', alt: 'A woman with eyes closed under a warm, softly lit shower' },
+  { name: 'Lavatory', href: `${GL}/gb_lavatory/`, src: 'prod-basin.webp', width: 1000, height: 666, pos: '45% 60%', alt: 'A grey rectangular basin and black faucet on a stone counter' },
+  { name: 'Public Restrooms', href: `${GL}/public/`, src: 'prod-public.webp', width: 1000, height: 667, pos: '50% 50%', alt: 'A bright public restroom with a long white counter, mirrors and touchless faucets' },
 ];
 
-export const showroom = {
-  lede: 'Sit on a heated WASHLET seat, feel the flow of a G Selection shower and see NEOREST up close. Our flagship in New Delhi brings more than 800 products under one roof, with specialists on hand to help you plan.',
-  facts: [
-    { term: 'Where', value: 'New Delhi' },
-    { term: 'For', value: 'Homeowners, architects and designers' },
-    { term: 'On display', value: 'NEOREST, WASHLET, bathtubs, faucets and showers' },
-  ],
-  alt: 'Inside the TOTO Delhi Showroom: a freestanding bath on a lit platform, a shower display and a lounge with bookshelves',
-};
 
+/* Facility information: toto.com/en's three facilities, in its order. Photos are its own 420px thumbnails. */
 export const facilities = [
-  { title: 'TOTO Museum', text: 'In Kitakyushu, where TOTO began. Explore it as a virtual tour.', href: 'https://jp.toto.com/pages/knowledge/visit/museum/en/vr/', src: 'visit-museum.webp', width: 420, height: 275, alt: 'The white, curved facade of the TOTO Museum' },
+  { title: 'TOTO Museum', badge: 'Virtual tour', text: 'In Kitakyushu, where TOTO began. Explore it from anywhere as a virtual tour.', href: 'https://jp.toto.com/pages/knowledge/visit/museum/en/vr/', src: 'visit-museum.webp', width: 420, height: 275, alt: 'The white, curved facade of the TOTO Museum' },
   { title: 'TOTO GALLERY·MA', text: "TOTO's gallery for architecture and design, in Tokyo.", credit: 'Photo © Nacasa & Partners Inc.', href: 'https://jp.toto.com/gallerma/index_e.htm', src: 'visit-gallery.webp', width: 420, height: 252, alt: 'An architecture exhibition at TOTO GALLERY·MA, with models on long tables and drawings on the walls' },
-  { title: 'experience TOTO', text: 'A TOTO public restroom at Narita Airport, Terminal 1.', href: 'https://www.toto.com/en/experiencetoto/', src: 'visit-experience.webp', width: 420, height: 275, alt: 'The entrance wall of the experience TOTO restroom in an airport arrivals hall' },
+  { title: 'experience TOTO', text: 'A TOTO public restroom in the arrivals lobby of Narita Airport, Terminal 1.', href: 'https://www.toto.com/en/experiencetoto/', src: 'visit-experience.webp', width: 420, height: 275, alt: 'The entrance wall of the experience TOTO restroom in an airport arrivals hall' },
 ];
 
-export const support = [
-  { title: 'Where to buy', text: 'Authorised TOTO dealers across India.', href: `${IN}/where-to-buy/` },
-  { title: 'Catalogue', text: 'The complete range, ready to download.', href: `${IN}/catalogue/` },
-  { title: 'Customer care', text: 'Service, installation and support.', href: `${IN}/customer-care/` },
-  { title: 'Product FAQs', text: 'Clear answers to common questions.', href: `${IN}/product-faqs/` },
-];
 
-export const footerColumns = [
-  {
-    title: 'Products',
-    links: [
-      { label: 'NEOREST', href: `${IN}/neorest/pure_luxury/` },
-      { label: 'NEOREST Collections', href: `${IN}/neorest-collections/` },
-      { label: 'WASHLET', href: `${IN}/washlet/` },
-      { label: 'Faucets', href: `${IN}/faucet/` },
-      { label: 'Showers', href: `${IN}/shower/` },
-      { label: 'Flotation Tub', href: `${IN}/recline-comfort/` },
-      { label: 'Public restrooms', href: `${IN}/public-restroom/` },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'Brand purpose', href: `${IN}/purpose/` },
-      { label: 'About TOTO Group', href: `${IN}/corporate/` },
-      { label: 'Our journey', href: `${IN}/journey/` },
-      { label: 'TOTO Cleanovation', href: `${IN}/cleanovation/` },
-      { label: 'Factory information', href: `${IN}/factory/` },
-      { label: 'News & events', href: `${IN}/news-events/` },
-      { label: 'Blog', href: `${IN}/blog/` },
-      { label: 'Careers', href: 'https://totoindia.darwinbox.in/ms/candidate/careers' },
-    ],
-  },
-  {
-    title: 'Support',
-    links: [
-      { label: 'Where to buy', href: `${IN}/where-to-buy/` },
-      { label: 'Catalogue', href: `${IN}/catalogue/` },
-      { label: 'Customer care', href: `${IN}/customer-care/` },
-      { label: 'Contact', href: `${IN}/contact-us/` },
-      { label: 'Product FAQs', href: `${IN}/product-faqs/` },
-      { label: 'Warranty policy', href: `${IN}/warranty-policy/` },
-    ],
-  },
-];
 
 export const regions = [
   { label: 'Global', href: 'https://www.toto.com/en/index.htm' },
@@ -356,10 +312,3 @@ export const regions = [
   { label: 'Oceania', href: 'https://oceania.toto.com/' },
 ];
 
-export const socials = [
-  { name: 'Facebook', href: 'https://www.facebook.com/TOTOIndiaPvtLtd' },
-  { name: 'X', href: 'https://twitter.com/TOTOIndiaPvtLtd' },
-  { name: 'Instagram', href: 'https://www.instagram.com/totoindiapvtltd/' },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/toto-india-pvt-ltd/' },
-  { name: 'YouTube', href: 'https://www.youtube.com/channel/UCY9Kyv7faw7in6FxpdrWS2w' },
-];

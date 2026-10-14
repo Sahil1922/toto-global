@@ -1,59 +1,66 @@
-import { Icon, Logo } from './Icons.jsx';
-import { footerColumns, regions, socials } from '../data.js';
+import { useState } from 'react';
+import { Arrow, Logo } from './Icons.jsx';
+import Reveal from './Reveal.jsx';
+import ScrollWords from './ScrollWords.jsx';
+import { primaryNav, productRange, regions } from '../data.js';
 
-const socialIcons = {
-  Facebook: <path fill="currentColor" d="M13.5 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z" />,
-  X: <path fill="currentColor" d="M17.6 3.5h2.9l-6.4 7.3 7.5 9.9h-5.9l-4.6-6-5.3 6H2.9l6.8-7.8-7.2-9.4h6l4.2 5.5 4.9-5.5Zm-1 15.5h1.6L7.5 5.1H5.8L16.6 19Z" />,
-  Instagram: (
-    <>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="17.2" cy="6.8" r="1" fill="currentColor" />
-    </>
-  ),
-  LinkedIn: <path fill="currentColor" d="M4.5 9h3v11h-3V9Zm1.5-5a1.75 1.75 0 1 1 0 3.5A1.75 1.75 0 0 1 6 4Zm4 5h2.9v1.5h.04c.4-.76 1.38-1.56 2.85-1.56 3.05 0 3.61 2 3.61 4.6V20h-3v-5.4c0-1.3-.02-2.96-1.8-2.96-1.8 0-2.08 1.4-2.08 2.86V20H10V9Z" />,
-  YouTube: <path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3L10 15Z" />,
-};
+/* Footer: toto.com/en's content (notes, Web Accessibility, © TOTO LTD., an OPEN site map) in this site's own theme:
+   a night band that signs off with TOTO's brand purpose lit word by word, hairline-divided notes, a square OPEN
+   toggle and a site map with the blue accent rule. */
+const company = [...primaryNav.before.filter((l) => !l.current), ...primaryNav.after];
+
+/* "WEB site" opens the header's Global network list, like toto.com's js-GlobalNetwork button */
+const openNetwork = () => window.dispatchEvent(new CustomEvent('toto:open-network'));
 
 export default function Footer() {
+  const [open, setOpen] = useState(false);
   return (
-    <footer className="site-footer">
-      <div className="wrap footer-top">
-        <div className="footer-brand">
-          <a className="logo-f" href="#top" aria-label="TOTO India, back to top"><Logo /></a>
-          <p>Japanese bathroom design and clean technology since 1917. Made in India at Halol, Gujarat.</p>
-          <div className="social">
-            {socials.map((s) => (
-              <a key={s.name} href={s.href} aria-label={`TOTO India on ${s.name}`}>
-                <svg viewBox="0 0 24 24" aria-hidden="true">{socialIcons[s.name]}</svg>
-              </a>
-            ))}
+    <footer className={`site-footer${open ? ' is-open' : ''}`}>
+      <div className="wrap">
+        <div className="foot-hero">
+          <div>
+            <Reveal><p className="eyebrow">TOTO brand purpose</p></Reveal>
+            {/* near the end of the page the line never rises far, so it finishes lighting lower down */}
+            <ScrollWords as="p" className="foot-purpose" from={0.95} to={0.75} text="Create an enriched and more comfortable lifestyle and culture." />
           </div>
+          <a className="foot-top-btn" href="#top">Back to top <Arrow /></a>
         </div>
 
-        {footerColumns.map((col) => (
-          <div key={col.title}>
-            <h3>{col.title}</h3>
-            <ul>
-              {col.links.map((l) => <li key={l.label}><a href={l.href}>{l.label}</a></li>)}
-            </ul>
-            {col.title === 'Support' && (
-              <details className="region">
-                <summary><Icon name="i-globe" width="16" height="16" /> India <Icon name="i-chev" width="10" height="10" /></summary>
-                <ul>
-                  {regions.map((r) => <li key={r.label}><a href={r.href}>{r.label}</a></li>)}
-                </ul>
-              </details>
-            )}
-          </div>
-        ))}
-      </div>
+        <div className="notes">
+          <Reveal as="p">WASHLET and “WASHLET logo” are registered trademark of TOTO LTD.</Reveal>
+          <Reveal as="p" delay={100}>
+            Product availability will depend on regional market. Please check the{' '}
+            <button type="button" className="notes-link" onClick={openNetwork}>WEB site</button> of each region.
+          </Reveal>
+          <Reveal as="p" className="concept-note" delay={200}>Homepage design concept. Not an official TOTO website.</Reveal>
+        </div>
 
-      <div className="wrap">
-        <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} TOTO LTD. All rights reserved.</span>
-          <span className="concept-note">Homepage design concept. Not an official TOTO website.</span>
-          <a href="#top">Back to top ↑</a>
+        <div className="foot-bar">
+          <a className="foot-logo" href="#top" aria-label="TOTO, back to top"><Logo /></a>
+          <a className="foot-link" href="https://www.toto.com/en/web-accessibility/">Web Accessibility</a>
+          <span className="foot-copy">© TOTO LTD.</span>
+          <button className="foot-toggle" type="button" aria-expanded={open} aria-controls="footer-map" onClick={() => setOpen(!open)}>
+            <span className="foot-plus" aria-hidden="true" />{open ? 'Close' : 'Open'}
+          </button>
+        </div>
+
+        <div className="foot-map" id="footer-map" inert={!open || undefined}>
+          <div>
+            <nav className="foot-cols" aria-label="Site map">
+              <div>
+                <h3>Product</h3>
+                <ul>{productRange.map((p) => <li key={p.name}><a href={p.href}>{p.name}</a></li>)}</ul>
+              </div>
+              <div>
+                <h3>Company</h3>
+                <ul>{company.map((l) => <li key={l.label}><a href={l.href}>{l.label}</a></li>)}</ul>
+              </div>
+              <div className="foot-regions">
+                <h3>Global network</h3>
+                <ul>{regions.map((r) => <li key={r.label}><a href={r.href}>{r.label}</a></li>)}</ul>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>
